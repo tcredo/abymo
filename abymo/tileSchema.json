@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "http://yourdomain.com/schemas/myschema.json",
+  "title": "A schema for JSON files containing tile data.",
+  "type": "object",
+  "definitions": {
+    "transform": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "link": {
+      "type": "object",
+      "properties": {
+        "src": { "type": "string" },
+        "type": { "type": "string" },
+        "transform": { "$ref": "#/definitions/transform" }
+      },
+      "required": ["src", "type", "transform"]
+    },
+    "tile": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/link" } 
+        }
+      }
+    }
+  },
+  "properties": {
+    "root": { "$ref": "#/definitions/tile" },
+    "subtiles": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/tile" }
+    }
+  },
+  "required": ["root"]
+}
